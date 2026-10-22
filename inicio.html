@@ -1,289 +1,227 @@
-```html
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#3436b5">
-  <title>INDUFAR — Verificação do Produto</title>
+  <title>AuthNow — Verificação de produto</title>
 
   <style>
     * {
       box-sizing: border-box;
+    }
+
+    html, body {
       margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #3436b5;
-      color: white;
-      min-height: 100vh;
-      min-height: 100dvh;
-      padding: 20px 18px 30px;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 28px;
-    }
-
-    .menu {
-      background: white;
-      color: #222;
-      border: 0;
-      border-radius: 13px;
-      width: 54px;
-      height: 54px;
-      font-size: 27px;
-      cursor: pointer;
-    }
-
-    .marca {
-      text-align: center;
-      color: #e0b900;
-      font-weight: bold;
-      font-size: 22px;
-    }
-
-    .marca span {
-      display: block;
-      color: white;
-      font-size: 13px;
-    }
-
-    .painel-camera {
       width: 100%;
-      height: min(62vh, 540px);
-      min-height: 330px;
-      position: relative;
-      overflow: hidden;
-      border: 2px solid #7774a7;
-      border-radius: 22px;
-      background: #292b45;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f4f8;
+      color: #111;
+    }
+
+    .tela {
+      display: none;
+      min-height: 100dvh;
+      width: 100%;
+    }
+
+    .tela.ativa {
+      display: flex;
+    }
+
+    /* Apresentação rápida */
+    #apresentacao {
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse at 20% 35%, #d5d2d1, transparent 50%),
+        linear-gradient(145deg, #5b5657, #211e1e);
+      color: white;
+      animation: aparecer 0.25s ease-out;
+    }
+
+    .marca-abertura {
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .marca-abertura strong {
+      display: block;
+      margin-top: 58px;
+      font-size: 38px;
+      letter-spacing: -1px;
+    }
+
+    /* Tela azul de apresentação */
+    #permissao {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 18px;
+      background: #f5f3f7;
+    }
+
+    .aviso-app {
+      position: absolute;
+      top: 0;
+      left: 12px;
+      right: 12px;
+      min-height: 100px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,.96);
+      border-radius: 18px;
+      box-shadow: 0 3px 15px #0000000d;
+    }
+
+    .aviso-app img {
+      width: 62px;
+      height: 62px;
+      border-radius: 13px;
+      object-fit: cover;
+    }
+
+    .aviso-texto {
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .aviso-texto strong {
+      display: block;
+      font-size: 17px;
+    }
+
+    .cartao {
+      width: 100%;
+      max-width: 440px;
+      margin-top: 85px;
+      padding: 28px 22px 30px;
+      text-align: center;
+      background: white;
+      border-radius: 28px;
+    }
+
+    .icone-localizacao {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 38px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    #video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-    }
-
-    .moldura {
-      position: absolute;
-      width: 70%;
-      aspect-ratio: 1;
-      max-height: 75%;
-      border: 3px solid #71d34a;
-      border-radius: 20px;
-      pointer-events: none;
-    }
-
-    .mensagem {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 24px;
-      text-align: center;
-      padding: 12px;
-      background: #0006;
-      color: #a7ef82;
-      font-size: 18px;
+      background: #0878f9;
+      color: white;
+      font-size: 48px;
       font-weight: bold;
+      transform: rotate(-8deg);
     }
 
-    .dica {
-      text-align: center;
-      margin: 28px 0;
-      font-size: 18px;
-      font-weight: bold;
+    .cartao h1 {
+      margin: 0 0 22px;
+      font-size: clamp(23px, 5.4vw, 30px);
+      line-height: 1.2;
+    }
+
+    .cartao p {
+      margin: 0 0 32px;
+      font-size: clamp(17px, 4.4vw, 22px);
+      line-height: 1.4;
     }
 
     .botao {
-      width: 100%;
-      padding: 17px;
       border: 0;
       border-radius: 10px;
+      padding: 16px 32px;
+      min-width: 200px;
+      background: #0878f9;
       color: white;
-      font-size: 20px;
+      font-size: 19px;
       cursor: pointer;
-      margin-top: 12px;
     }
 
-    #iniciar {
-      background: linear-gradient(90deg, #259d30, #54cf53);
+    .botao:active {
+      transform: scale(.98);
     }
 
-    #parar {
-      background: #45475e;
-      display: none;
+    @keyframes aparecer {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
-    #resultado {
-      display: none;
-      margin-top: 18px;
-      padding: 18px;
-      border-radius: 14px;
-      background: white;
-      color: #171717;
-      overflow-wrap: anywhere;
-    }
+    @media (max-height: 700px) {
+      .cartao {
+        margin-top: 95px;
+        padding: 20px;
+      }
 
-    #resultado a {
-      color: #175ee8;
-    }
+      .icone-localizacao {
+        margin-bottom: 22px;
+      }
 
-    .aviso {
-      margin-top: 20px;
-      font-size: 12px;
-      line-height: 1.5;
-      color: #e4e4ff;
+      .cartao p {
+        margin-bottom: 22px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <button class="menu" aria-label="Menu" onclick="alert('Menu')">☰</button>
 
-    <div class="marca">
-      IF
-      <span>INDUFAR</span>
+  <!-- ETAPA 1: apresentação rápida -->
+  <section id="apresentacao" class="tela ativa">
+    <div class="marca-abertura">
+      <span>Fornecido por</span>
+      <strong>AuthNow</strong>
+    </div>
+  </section>
+
+  <!-- ETAPA 2: tela azul de apresentação -->
+  <section id="permissao" class="tela">
+
+    <div class="aviso-app">
+      <img src="assets/authnow-logo.png" alt="Logo AuthNow">
+      <div class="aviso-texto">
+        Fornecido por
+        <strong>AuthNow – Product Verification</strong>
+        Instant Product Authentication
+      </div>
     </div>
 
-    <span aria-hidden="true">POR⌄</span>
-  </header>
+    <div class="cartao">
+      <div class="icone-localizacao" aria-hidden="true">➤</div>
 
-  <main>
-    <section class="painel-camera">
-      <video id="video" playsinline muted></video>
-      <div class="moldura"></div>
-      <div class="mensagem" id="mensagem">
-        Posicione o QR Code dentro da moldura
-      </div>
-    </section>
+      <h1>Ajude a Combater a Falsificação</h1>
 
-    <p class="dica" id="dica">Aproxime-se um pouco mais</p>
+      <p>
+        Compartilhe sua localização para nos ajudar a verificar a autenticidade
+        do produto. Seus dados de localização nos permitem distinguir produtos
+        genuínos de falsificações com base na distribuição geográfica.
+      </p>
 
-    <button class="botao" id="iniciar">Autenticar</button>
-    <button class="botao" id="parar">Parar</button>
+      <button class="botao" id="continuar" type="button">
+        Continuar
+      </button>
+    </div>
+  </section>
 
-    <section id="resultado" aria-live="polite"></section>
-
-    <p class="aviso">
-      A leitura identifica o conteúdo do QR Code. A autenticidade do produto
-      só pode ser confirmada por um sistema oficial de verificação.
-    </p>
-  </main>
-
-  <script src="https://unpkg.com/@zxing/library@0.21.3/umd/index.min.js"></script>
   <script>
-    const video = document.getElementById('video');
-    const iniciar = document.getElementById('iniciar');
-    const parar = document.getElementById('parar');
-    const mensagem = document.getElementById('mensagem');
-    const dica = document.getElementById('dica');
-    const resultado = document.getElementById('resultado');
+    const apresentacao = document.getElementById("apresentacao");
+    const permissao = document.getElementById("permissao");
 
-    let leitor = null;
+    // Simula a apresentação rápida antes da tela azul.
+    setTimeout(() => {
+      apresentacao.classList.remove("ativa");
+      permissao.classList.add("ativa");
+    }, 1200);
 
-    iniciar.addEventListener('click', async () => {
-      resultado.style.display = 'none';
-      mensagem.textContent = 'Iniciando câmera...';
-      dica.textContent = 'Aponte a câmera para o QR Code';
-
-      if (!navigator.mediaDevices?.getUserMedia) {
-        mensagem.textContent = 'Abra o site por HTTPS para usar a câmera.';
-        return;
-      }
-
-      if (!window.ZXing) {
-        mensagem.textContent = 'Não foi possível carregar o leitor de QR.';
-        return;
-      }
-
-      try {
-        leitor = new ZXing.BrowserQRCodeReader();
-
-        video.style.display = 'block';
-        iniciar.style.display = 'none';
-        parar.style.display = 'block';
-
-        await leitor.decodeFromVideoDevice(
-          undefined,
-          video,
-          (leitura, erro) => {
-            if (leitura) {
-              const conteudo = leitura.getText();
-
-              leitor.reset();
-              leitor = null;
-
-              video.style.display = 'none';
-              parar.style.display = 'none';
-              iniciar.style.display = 'block';
-
-              mensagem.textContent = 'QR Code lido!';
-              dica.textContent = 'Conteúdo encontrado';
-
-              resultado.style.display = 'block';
-              resultado.replaceChildren();
-
-              const titulo = document.createElement('h3');
-              titulo.textContent = 'Resultado da leitura';
-
-              const texto = document.createElement('p');
-              texto.textContent = conteudo;
-              texto.style.margin = '12px 0';
-
-              resultado.append(titulo, texto);
-
-              if (/^https?:\\/\\//i.test(conteudo)) {
-                const link = document.createElement('a');
-                link.href = conteudo;
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                link.textContent = 'Abrir link do QR Code';
-                resultado.appendChild(link);
-              }
-            }
-          }
-        );
-
-        mensagem.textContent = 'Aponte a câmera para o QR Code';
-      } catch (erro) {
-        mensagem.textContent =
-          'Não foi possível abrir a câmera. Verifique a permissão do navegador.';
-        video.style.display = 'none';
-        iniciar.style.display = 'block';
-        parar.style.display = 'none';
-      }
-    });
-
-    parar.addEventListener('click', () => {
-      if (leitor) {
-        leitor.reset();
-        leitor = null;
-      }
-
-      video.pause();
-      video.srcObject?.getTracks().forEach(track => track.stop());
-      video.srcObject = null;
-
-      video.style.display = 'none';
-      parar.style.display = 'none';
-      iniciar.style.display = 'block';
-
-      mensagem.textContent = 'Leitura pausada';
-      dica.textContent = 'Toque em Autenticar para tentar novamente';
+    document.getElementById("continuar").addEventListener("click", () => {
+      // Próxima tela será adicionada aqui.
+      alert("Próxima etapa será adicionada.");
     });
   </script>
+
 </body>
 </html>
-```
