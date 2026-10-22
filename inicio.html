@@ -1,0 +1,289 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#3436b5">
+  <title>INDUFAR — Verificação do Produto</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #3436b5;
+      color: white;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 20px 18px 30px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .menu {
+      background: white;
+      color: #222;
+      border: 0;
+      border-radius: 13px;
+      width: 54px;
+      height: 54px;
+      font-size: 27px;
+      cursor: pointer;
+    }
+
+    .marca {
+      text-align: center;
+      color: #e0b900;
+      font-weight: bold;
+      font-size: 22px;
+    }
+
+    .marca span {
+      display: block;
+      color: white;
+      font-size: 13px;
+    }
+
+    .painel-camera {
+      width: 100%;
+      height: min(62vh, 540px);
+      min-height: 330px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #7774a7;
+      border-radius: 22px;
+      background: #292b45;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .moldura {
+      position: absolute;
+      width: 70%;
+      aspect-ratio: 1;
+      max-height: 75%;
+      border: 3px solid #71d34a;
+      border-radius: 20px;
+      pointer-events: none;
+    }
+
+    .mensagem {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 24px;
+      text-align: center;
+      padding: 12px;
+      background: #0006;
+      color: #a7ef82;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .dica {
+      text-align: center;
+      margin: 28px 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .botao {
+      width: 100%;
+      padding: 17px;
+      border: 0;
+      border-radius: 10px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    #iniciar {
+      background: linear-gradient(90deg, #259d30, #54cf53);
+    }
+
+    #parar {
+      background: #45475e;
+      display: none;
+    }
+
+    #resultado {
+      display: none;
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 14px;
+      background: white;
+      color: #171717;
+      overflow-wrap: anywhere;
+    }
+
+    #resultado a {
+      color: #175ee8;
+    }
+
+    .aviso {
+      margin-top: 20px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #e4e4ff;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <button class="menu" aria-label="Menu" onclick="alert('Menu')">☰</button>
+
+    <div class="marca">
+      IF
+      <span>INDUFAR</span>
+    </div>
+
+    <span aria-hidden="true">POR⌄</span>
+  </header>
+
+  <main>
+    <section class="painel-camera">
+      <video id="video" playsinline muted></video>
+      <div class="moldura"></div>
+      <div class="mensagem" id="mensagem">
+        Posicione o QR Code dentro da moldura
+      </div>
+    </section>
+
+    <p class="dica" id="dica">Aproxime-se um pouco mais</p>
+
+    <button class="botao" id="iniciar">Autenticar</button>
+    <button class="botao" id="parar">Parar</button>
+
+    <section id="resultado" aria-live="polite"></section>
+
+    <p class="aviso">
+      A leitura identifica o conteúdo do QR Code. A autenticidade do produto
+      só pode ser confirmada por um sistema oficial de verificação.
+    </p>
+  </main>
+
+  <script src="https://unpkg.com/@zxing/library@0.21.3/umd/index.min.js"></script>
+  <script>
+    const video = document.getElementById('video');
+    const iniciar = document.getElementById('iniciar');
+    const parar = document.getElementById('parar');
+    const mensagem = document.getElementById('mensagem');
+    const dica = document.getElementById('dica');
+    const resultado = document.getElementById('resultado');
+
+    let leitor = null;
+
+    iniciar.addEventListener('click', async () => {
+      resultado.style.display = 'none';
+      mensagem.textContent = 'Iniciando câmera...';
+      dica.textContent = 'Aponte a câmera para o QR Code';
+
+      if (!navigator.mediaDevices?.getUserMedia) {
+        mensagem.textContent = 'Abra o site por HTTPS para usar a câmera.';
+        return;
+      }
+
+      if (!window.ZXing) {
+        mensagem.textContent = 'Não foi possível carregar o leitor de QR.';
+        return;
+      }
+
+      try {
+        leitor = new ZXing.BrowserQRCodeReader();
+
+        video.style.display = 'block';
+        iniciar.style.display = 'none';
+        parar.style.display = 'block';
+
+        await leitor.decodeFromVideoDevice(
+          undefined,
+          video,
+          (leitura, erro) => {
+            if (leitura) {
+              const conteudo = leitura.getText();
+
+              leitor.reset();
+              leitor = null;
+
+              video.style.display = 'none';
+              parar.style.display = 'none';
+              iniciar.style.display = 'block';
+
+              mensagem.textContent = 'QR Code lido!';
+              dica.textContent = 'Conteúdo encontrado';
+
+              resultado.style.display = 'block';
+              resultado.replaceChildren();
+
+              const titulo = document.createElement('h3');
+              titulo.textContent = 'Resultado da leitura';
+
+              const texto = document.createElement('p');
+              texto.textContent = conteudo;
+              texto.style.margin = '12px 0';
+
+              resultado.append(titulo, texto);
+
+              if (/^https?:\\/\\//i.test(conteudo)) {
+                const link = document.createElement('a');
+                link.href = conteudo;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = 'Abrir link do QR Code';
+                resultado.appendChild(link);
+              }
+            }
+          }
+        );
+
+        mensagem.textContent = 'Aponte a câmera para o QR Code';
+      } catch (erro) {
+        mensagem.textContent =
+          'Não foi possível abrir a câmera. Verifique a permissão do navegador.';
+        video.style.display = 'none';
+        iniciar.style.display = 'block';
+        parar.style.display = 'none';
+      }
+    });
+
+    parar.addEventListener('click', () => {
+      if (leitor) {
+        leitor.reset();
+        leitor = null;
+      }
+
+      video.pause();
+      video.srcObject?.getTracks().forEach(track => track.stop());
+      video.srcObject = null;
+
+      video.style.display = 'none';
+      parar.style.display = 'none';
+      iniciar.style.display = 'block';
+
+      mensagem.textContent = 'Leitura pausada';
+      dica.textContent = 'Toque em Autenticar para tentar novamente';
+    });
+  </script>
+</body>
+</html>
+```
