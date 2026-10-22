@@ -552,21 +552,106 @@
   </button>
 </section>
 
-  <script>
-    const apresentacao = document.getElementById("apresentacao");
-    const permissao = document.getElementById("permissao");
+  
+<script>
+  const apresentacao = document.getElementById("apresentacao");
+  const permissao = document.getElementById("permissao");
+  const instrucoes = document.getElementById("instrucoes");
+  const scanner = document.getElementById("scanner");
 
-    // Simula a apresentação rápida antes da tela azul.
-    setTimeout(() => {
-      apresentacao.classList.remove("ativa");
-      permissao.classList.add("ativa");
-    }, 1200);
-
-    document.getElementById("continuar").addEventListener("click", () => {
-      // Próxima tela será adicionada aqui.
-      alert("Próxima etapa será adicionada.");
+  function mostrarTela(tela) {
+    document.querySelectorAll(".tela").forEach(elemento => {
+      elemento.classList.remove("ativa");
     });
-  </script>
+    tela.classList.add("ativa");
+  }
 
+  // ETAPA 1: apresentação rápida
+  setTimeout(() => {
+    mostrarTela(permissao);
+  }, 1200);
+
+  // ETAPA 2 -> ETAPA 3
+  document.getElementById("continuar").addEventListener("click", () => {
+    mostrarTela(instrucoes);
+  });
+
+  // Exige que a pessoa marque o consentimento
+  const aceite = document.getElementById("aceite-privacidade");
+  const irScanner = document.getElementById("ir-scanner");
+
+  aceite.addEventListener("change", () => {
+    irScanner.disabled = !aceite.checked;
+  });
+
+  // ETAPA 3 -> ETAPA 4
+  irScanner.addEventListener("click", async () => {
+    mostrarTela(scanner);
+
+    const carregando = document.getElementById("carregando-camera");
+    const mensagem = document.getElementById("mensagem-leitura");
+    carregando.classList.add("visivel");
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" } },
+        audio: false
+      });
+
+      const video = document.getElementById("video-camera");
+      video.srcObject = stream;
+      await video.play();
+
+      carregando.classList.remove("visivel");
+      mensagem.textContent = "Posicione o QR Code na moldura";
+    } catch (erro) {
+      carregando.classList.remove("visivel");
+      mensagem.textContent =
+        "Não foi possível acessar a câmera. Verifique a permissão do navegador.";
+    }
+  });
+
+  // Parar a câmera
+  document.getElementById("parar-scanner").addEventListener("click", () => {
+    const video = document.getElementById("video-camera");
+
+    if (video.srcObject) {
+      video.srcObject.getTracks().forEach(track => track.stop());
+      video.srcObject = null;
+    }
+
+    mostrarTela(instrucoes);
+  });
+
+  // Lanterna: disponível apenas em câmeras/dispositivos compatíveis
+  document.getElementById("lanterna").addEventListener("click", async () => {
+    const video = document.getElementById("video-camera");
+    const stream = video.srcObject;
+
+    if (!stream) {
+      alert("A câmera ainda não está ativa.");
+      return;
+    }
+
+    const faixa = stream.getVideoTracks()[0];
+    const recursos = faixa.getCapabilities?.();
+
+    if (!recursos || !recursos.torch) {
+      alert("A lanterna não é compatível com este dispositivo ou navegador.");
+      return;
+    }
+
+    const ligada = faixa.getSettings().torch === true;
+
+    try {
+      await faixa.applyConstraints({
+        advanced: [{ torch: !ligada }]
+      });
+    } catch {
+      alert("Não foi possível alterar a lanterna.");
+    }
+  });
+</script>
 </body>
 </html>
+
