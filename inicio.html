@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -53,7 +52,7 @@
       letter-spacing: -1px;
     }
 
-    /* Tela azul de apresentação */
+    /* Tela de apresentação */
     #permissao {
       flex-direction: column;
       align-items: center;
@@ -166,278 +165,282 @@
       }
     }
 
-/* Logo INDUFAR discreta */
-.logo-indufar {
-  width: 125px;
-  max-height: 90px;
-  object-fit: contain;
-  margin: 12px auto 22px;
-}
+    /* Logo INDUFAR */
+    .logo-indufar {
+      width: 125px;
+      max-height: 90px;
+      object-fit: contain;
+      margin: 12px auto 22px;
+    }
 
-/* Tela das instruções */
-#instrucoes {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 18px;
-  background: linear-gradient(140deg, #20204d, #3027a4);
-  color: #111;
-}
+    /* Tela das instruções */
+    #instrucoes {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 18px;
+      background: linear-gradient(140deg, #20204d, #3027a4);
+      color: #111;
+    }
 
-.cartao-instrucoes {
-  width: 100%;
-  max-width: 440px;
-  padding: 28px 22px;
-  background: #fff;
-  border-radius: 16px;
-}
+    .cartao-instrucoes {
+      width: 100%;
+      max-width: 440px;
+      padding: 28px 22px;
+      background: #fff;
+      border-radius: 16px;
+    }
 
-.passo {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 12px;
-  margin-bottom: 28px;
-}
+    .passo {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
 
-.numero-passo {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  color: white;
-  font-size: 21px;
-  background: linear-gradient(135deg, #367cff, #9638ed);
-}
+    .numero-passo {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      font-size: 21px;
+      background: linear-gradient(135deg, #367cff, #9638ed);
+    }
 
-.passo h2 {
-  font-size: 20px;
-  margin: 5px 0 8px;
-}
+    .passo h2 {
+      font-size: 20px;
+      margin: 5px 0 8px;
+    }
 
-.passo p {
-  margin: 0;
-  color: #666;
-  font-size: 17px;
-  line-height: 1.45;
-}
+    .passo p {
+      margin: 0;
+      color: #666;
+      font-size: 17px;
+      line-height: 1.45;
+    }
 
-.privacidade {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  padding: 14px;
-  margin: 12px 0 22px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  font-size: 14px;
-  line-height: 1.5;
-}
+    .privacidade {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 14px;
+      margin: 12px 0 16px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
 
-.progresso {
-  width: 100%;
-  height: 10px;
-  overflow: hidden;
-  border-radius: 20px;
-  background: #dedee5;
-  margin: 14px 0 4px;
-}
+    /* Barra de progresso */
+    .progresso {
+      height: 12px;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 20px;
+      background: #dedee5;
+      margin: 14px 0 5px;
+    }
 
-.progresso span {
-  display: block;
-  width: 0%;
-  height: 100%;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #327cff, #9739ef);
-  transition: width 0.1s linear;
-}
+    .progresso span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #327cff, #9739ef);
+      transition: width 0.05s linear;
+    }
 
-.porcentagem-progresso {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 16px;
-}
-}
+    .porcentagem-progresso {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 18px;
+    }
 
-.botao-proximo {
-  width: 100%;
-  border: 0;
-  border-radius: 10px;
-  padding: 15px;
-  background: #0878f9;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-}
+    .botao-proximo {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 15px;
+      background: #0878f9;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
 
-.botao-proximo:disabled {
-  opacity: .45;
-  cursor: not-allowed;
-}
+    .botao-proximo:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
 
-/* Tela do scanner */
-#scanner {
-  flex-direction: column;
-  align-items: center;
-  min-height: 100dvh;
-  padding: 16px 18px 28px;
-  color: white;
-  background: linear-gradient(125deg, #303e9c, #4931d5);
-}
+    /* Tela do scanner */
+    #scanner {
+      flex-direction: column;
+      align-items: center;
+      min-height: 100dvh;
+      padding: 16px 18px 28px;
+      color: white;
+      background: linear-gradient(125deg, #303e9c, #4931d5);
+    }
 
-.topo-scanner {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+    .topo-scanner {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-.menu-scanner {
-  width: 48px;
-  height: 48px;
-  background: white;
-  color: #222;
-  border: 0;
-  border-radius: 12px;
-  font-size: 27px;
-}
+    .menu-scanner {
+      width: 48px;
+      height: 48px;
+      background: white;
+      color: #222;
+      border: 0;
+      border-radius: 12px;
+      font-size: 27px;
+    }
 
-.area-leitura {
-  position: relative;
-  width: 100%;
-  max-width: 440px;
-  aspect-ratio: 0.83;
-  max-height: 48dvh;
-  min-height: 260px;
-  margin-top: 10px;
-  border: 2px solid #aaa;
-  border-radius: 18px;
-  background: #27242b;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
+    .area-leitura {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 0.83;
+      max-height: 48dvh;
+      min-height: 260px;
+      margin-top: 10px;
+      border: 2px solid #aaa;
+      border-radius: 18px;
+      background: #27242b;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
 
-#video-camera {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  inset: 0;
-}
+    #video-camera {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
 
-.quadrado-qr {
-  position: relative;
-  width: 68%;
-  aspect-ratio: 1;
-  z-index: 1;
-  background: #ffffff10;
-  border-radius: 12px;
-}
+    .quadrado-qr {
+      position: relative;
+      width: 68%;
+      aspect-ratio: 1;
+      z-index: 1;
+      background: #ffffff10;
+      border-radius: 12px;
+    }
 
-.canto {
-  position: absolute;
-  width: 45px;
-  height: 45px;
-  border-color: #70d64c;
-  border-style: solid;
-}
+    .canto {
+      position: absolute;
+      width: 45px;
+      height: 45px;
+      border-color: #70d64c;
+      border-style: solid;
+    }
 
-.canto.tl {
-  top: 0; left: 0;
-  border-width: 4px 0 0 4px;
-  border-radius: 20px 0 0;
-}
+    .canto.tl {
+      top: 0;
+      left: 0;
+      border-width: 4px 0 0 4px;
+      border-radius: 20px 0 0;
+    }
 
-.canto.tr {
-  top: 0; right: 0;
-  border-width: 4px 4px 0 0;
-  border-radius: 0 20px 0 0;
-}
+    .canto.tr {
+      top: 0;
+      right: 0;
+      border-width: 4px 4px 0 0;
+      border-radius: 0 20px 0 0;
+    }
 
-.canto.bl {
-  bottom: 0; left: 0;
-  border-width: 0 0 4px 4px;
-  border-radius: 0 0 0 20px;
-}
+    .canto.bl {
+      bottom: 0;
+      left: 0;
+      border-width: 0 0 4px 4px;
+      border-radius: 0 0 0 20px;
+    }
 
-.canto.br {
-  bottom: 0; right: 0;
-  border-width: 0 4px 4px 0;
-  border-radius: 0 0 20px;
-}
+    .canto.br {
+      bottom: 0;
+      right: 0;
+      border-width: 0 4px 4px 0;
+      border-radius: 0 0 20px;
+    }
 
-.faixa-leitura {
-  position: absolute;
-  z-index: 2;
-  top: 48%;
-  width: 100%;
-  padding: 12px 4px;
-  text-align: center;
-  background: #0008;
-  color: #9ae875;
-  font-size: 17px;
-  font-weight: bold;
-}
+    .faixa-leitura {
+      position: absolute;
+      z-index: 2;
+      top: 48%;
+      width: 100%;
+      padding: 12px 4px;
+      text-align: center;
+      background: #0008;
+      color: #9ae875;
+      font-size: 17px;
+      font-weight: bold;
+    }
 
-.lanterna {
-  align-self: flex-end;
-  margin-top: -48px;
-  z-index: 3;
-  width: 54px;
-  height: 54px;
-  border: 0;
-  border-radius: 50%;
-  color: white;
-  background: #171b38;
-  font-size: 24px;
-}
+    .lanterna {
+      align-self: flex-end;
+      margin-top: -48px;
+      z-index: 3;
+      width: 54px;
+      height: 54px;
+      border: 0;
+      border-radius: 50%;
+      color: white;
+      background: #171b38;
+      font-size: 24px;
+    }
 
-.barra-scanner {
-  width: 100%;
-  height: 12px;
-  border-radius: 20px;
-  background: white;
-  margin: 28px 0;
-}
+    .barra-scanner {
+      width: 100%;
+      height: 12px;
+      border-radius: 20px;
+      background: white;
+      margin: 28px 0;
+    }
 
-.texto-distancia {
-  margin: 24px 0 36px;
-  text-align: center;
-  font-size: 19px;
-  font-weight: bold;
-}
+    .texto-distancia {
+      margin: 24px 0 36px;
+      text-align: center;
+      font-size: 19px;
+      font-weight: bold;
+    }
 
-.parar-scanner {
-  width: 100%;
-  margin-top: auto;
-  border: 0;
-  border-radius: 10px;
-  padding: 17px;
-  background: linear-gradient(90deg, #24a52b, #56d84e);
-  color: white;
-  font-size: 20px;
-}
+    .parar-scanner {
+      width: 100%;
+      margin-top: auto;
+      border: 0;
+      border-radius: 10px;
+      padding: 17px;
+      background: linear-gradient(90deg, #24a52b, #56d84e);
+      color: white;
+      font-size: 20px;
+    }
 
-.mensagem-camera {
-  position: absolute;
-  z-index: 5;
-  inset: 0;
-  display: none;
-  place-items: center;
-  padding: 30px;
-  text-align: center;
-  color: white;
-  background: #000b;
-  font-size: 20px;
-}
+    .mensagem-camera {
+      position: absolute;
+      z-index: 5;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 30px;
+      text-align: center;
+      color: white;
+      background: #000b;
+      font-size: 20px;
+    }
 
-.mensagem-camera.visivel {
-  display: grid;
-}
+    .mensagem-camera.visivel {
+      display: grid;
+    }
   </style>
 </head>
 
@@ -451,9 +454,8 @@
     </div>
   </section>
 
-  <!-- ETAPA 2: tela azul de apresentação -->
+  <!-- ETAPA 2: tela de apresentação -->
   <section id="permissao" class="tela">
-
     <div class="aviso-app">
       <img src="assets/authnow-logo.png" alt="Logo AuthNow">
       <div class="aviso-texto">
@@ -480,206 +482,264 @@
     </div>
   </section>
 
-<!-- ETAPA 3: instruções de leitura -->
-<div class="progresso">
-  <span id="barra-progresso"></span>
-</div>
+  <!-- ETAPA 3: instruções de leitura -->
+  <section id="instrucoes" class="tela">
+    <div class="cartao-instrucoes">
 
-<span
-  class="porcentagem-progresso"
-  id="porcentagem-progresso"
->0%</span>
-      <div>
-        <h2>Procure boa iluminação</h2>
-        <p>Certifique-se de estar em um lugar bem iluminado.</p>
+      <div class="passo">
+        <span class="numero-passo">1</span>
+        <div>
+          <h2>Escaneie seu produto</h2>
+          <p>Escaneie o código QR do produto.</p>
+          <div style="font-size:54px;color:#aaa;margin-top:8px;">▦</div>
+        </div>
+      </div>
+
+      <div class="passo">
+        <span class="numero-passo">2</span>
+        <div>
+          <h2>Procure boa iluminação</h2>
+          <p>Certifique-se de estar em um lugar bem iluminado.</p>
+        </div>
+      </div>
+
+      <div class="passo">
+        <span class="numero-passo">3</span>
+        <div>
+          <h2>Ajuste a distância</h2>
+          <p>Aproxime-se e afaste-se conforme as instruções.</p>
+        </div>
+      </div>
+
+      <label class="privacidade">
+        <input type="checkbox" id="aceite-privacidade">
+        <span>
+          Concordo com a
+          <a href="politica-privacidade.html">Política de Privacidade</a>
+          (uso da câmera e localização para validação de QR).
+        </span>
+      </label>
+
+      <!-- Barra e porcentagem -->
+      <div class="progresso">
+        <span id="barra-progresso"></span>
+      </div>
+
+      <span
+        class="porcentagem-progresso"
+        id="porcentagem-progresso"
+      >0%</span>
+
+      <button class="botao-proximo" id="ir-scanner" disabled>
+        Continuar
+      </button>
+    </div>
+  </section>
+
+  <!-- ETAPA 4: câmera -->
+  <section id="scanner" class="tela">
+    <div class="topo-scanner">
+      <button
+        class="menu-scanner"
+        type="button"
+        aria-label="Menu"
+      >☰</button>
+    </div>
+
+    <img
+      class="logo-indufar"
+      src="assets/indufar-logo.png"
+      alt="INDUFAR"
+    >
+
+    <div class="area-leitura">
+      <video id="video-camera" autoplay playsinline muted></video>
+
+      <div class="quadrado-qr" aria-hidden="true">
+        <span class="canto tl"></span>
+        <span class="canto tr"></span>
+        <span class="canto bl"></span>
+        <span class="canto br"></span>
+      </div>
+
+      <div class="faixa-leitura" id="mensagem-leitura">
+        Posicione o QR Code na moldura
+      </div>
+
+      <div class="mensagem-camera" id="carregando-camera">
+        Carregando... Por favor, aguarde.
       </div>
     </div>
 
-    <div class="passo">
-      <span class="numero-passo">3</span>
-      <div>
-        <h2>Ajuste a distância</h2>
-        <p>Aproxime-se e afaste-se conforme as instruções.</p>
-      </div>
+    <button
+      class="lanterna"
+      id="lanterna"
+      type="button"
+      aria-label="Lanterna"
+    >🔦</button>
+
+    <div class="barra-scanner"></div>
+
+    <div style="font-size:28px;background:white;color:#3735a4;border-radius:50%;width:42px;height:42px;display:grid;place-items:center;">
+      i
     </div>
 
-    <label class="privacidade">
-      <input type="checkbox" id="aceite-privacidade">
-      <span>Concordo com a <a href="politica-privacidade.html">Política de Privacidade</a> (uso da câmera e localização para validação de QR).</span>
-    </label>
+    <p class="texto-distancia" id="texto-distancia">
+      Afaste-se um pouco mais
+    </p>
 
-    <button class="botao-proximo" id="ir-scanner" disabled>
-      Continuar
+    <button class="parar-scanner" id="parar-scanner" type="button">
+      Parar
     </button>
-  </div>
-</section>
+  </section>
 
-<!-- ETAPA 4: câmera e leitura do QR -->
-<section id="scanner" class="tela">
-  <div class="topo-scanner">
-    <button class="menu-scanner" type="button" aria-label="Menu">☰</button>
-  </div>
+  <script>
+    const apresentacao = document.getElementById("apresentacao");
+    const permissao = document.getElementById("permissao");
+    const instrucoes = document.getElementById("instrucoes");
+    const scanner = document.getElementById("scanner");
 
-  <!-- Logo INDUFAR: coloque o arquivo original nessa localização -->
-  <img class="logo-indufar" src="assets/indufar-logo.png" alt="INDUFAR">
+    function mostrarTela(tela) {
+      document.querySelectorAll(".tela").forEach(elemento => {
+        elemento.classList.remove("ativa");
+      });
 
-  <div class="area-leitura">
-    <video id="video-camera" autoplay playsinline muted></video>
+      tela.classList.add("ativa");
+    }
 
-    <div class="quadrado-qr" aria-hidden="true">
-      <span class="canto tl"></span>
-      <span class="canto tr"></span>
-      <span class="canto bl"></span>
-      <span class="canto br"></span>
-    </div>
+    // ETAPA 1: apresentação rápida
+    setTimeout(() => {
+      mostrarTela(permissao);
+    }, 1200);
 
-    <div class="faixa-leitura" id="mensagem-leitura">
-      Posicione o QR Code na moldura
-    </div>
-
-    <div class="mensagem-camera" id="carregando-camera">
-      Carregando... Por favor, aguarde.
-    </div>
-  </div>
-
-  <button class="lanterna" id="lanterna" type="button" aria-label="Lanterna">
-    🔦
-  </button>
-
-  <div class="barra-scanner"></div>
-
-  <div style="font-size:28px;background:white;color:#3735a4;border-radius:50%;width:42px;height:42px;display:grid;place-items:center;">i</div>
-
-  <p class="texto-distancia" id="texto-distancia">
-    Afaste-se um pouco mais
-  </p>
-
-  <button class="parar-scanner" id="parar-scanner" type="button">
-    Parar
-  </button>
-</section>
-
-  
-<script>
-  const apresentacao = document.getElementById("apresentacao");
-  const permissao = document.getElementById("permissao");
-  const instrucoes = document.getElementById("instrucoes");
-  const scanner = document.getElementById("scanner");
-
-  function mostrarTela(tela) {
-    document.querySelectorAll(".tela").forEach(elemento => {
-      elemento.classList.remove("ativa");
+    // ETAPA 2 -> ETAPA 3
+    document.getElementById("continuar").addEventListener("click", () => {
+      mostrarTela(instrucoes);
     });
-    tela.classList.add("ativa");
-  }
 
-  // ETAPA 1: apresentação rápida
-  setTimeout(() => {
-    mostrarTela(permissao);
-  }, 1200);
+    // Barra de progresso na tela de instruções
+    const barraProgresso = document.getElementById("barra-progresso");
+    const porcentagemProgresso = document.getElementById(
+      "porcentagem-progresso"
+    );
 
- // ETAPA 2 -> ETAPA 3 + barra de progresso
-document.getElementById("continuar").addEventListener("click", () => {
-  mostrarTela(instrucoes);
+    let intervaloProgresso = null;
 
-  const barra = document.getElementById("barra-progresso");
-  const porcentagem = document.getElementById("porcentagem-progresso");
+    function iniciarProgresso() {
+      clearInterval(intervaloProgresso);
 
-  if (!barra || !porcentagem) return;
+      let valor = 0;
 
-  clearInterval(window.intervaloProgresso);
+      barraProgresso.style.width = "0%";
+      porcentagemProgresso.textContent = "0%";
 
-  let valor = 0;
-  barra.style.width = "0%";
-  porcentagem.textContent = "0%";
+      intervaloProgresso = setInterval(() => {
+        valor = Math.min(valor + 1, 100);
 
-  window.intervaloProgresso = setInterval(() => {
-    valor = Math.min(valor + 1, 100);
-    barra.style.width = valor + "%";
-    porcentagem.textContent = valor + "%";
+        barraProgresso.style.width = valor + "%";
+        porcentagemProgresso.textContent = valor + "%";
 
-    if (valor >= 100) {
-      clearInterval(window.intervaloProgresso);
+        if (valor >= 100) {
+          clearInterval(intervaloProgresso);
+          intervaloProgresso = null;
+        }
+      }, 50);
     }
-  }, 50);
-});
 
-  // Exige que a pessoa marque o consentimento
-  const aceite = document.getElementById("aceite-privacidade");
-  const irScanner = document.getElementById("ir-scanner");
+    // Exige consentimento antes de liberar o scanner
+    const aceite = document.getElementById("aceite-privacidade");
+    const irScanner = document.getElementById("ir-scanner");
 
-  aceite.addEventListener("change", () => {
-    irScanner.disabled = !aceite.checked;
-  });
+    aceite.addEventListener("change", () => {
+      irScanner.disabled = !aceite.checked;
 
-  // ETAPA 3 -> ETAPA 4
-  irScanner.addEventListener("click", async () => {
-    mostrarTela(scanner);
+      if (aceite.checked) {
+        iniciarProgresso();
+      } else {
+        clearInterval(intervaloProgresso);
+        intervaloProgresso = null;
+        barraProgresso.style.width = "0%";
+        porcentagemProgresso.textContent = "0%";
+      }
+    });
 
-    const carregando = document.getElementById("carregando-camera");
-    const mensagem = document.getElementById("mensagem-leitura");
-    carregando.classList.add("visivel");
+    // ETAPA 3 -> ETAPA 4
+    irScanner.addEventListener("click", async () => {
+      if (!aceite.checked) {
+        return;
+      }
 
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: "environment" } },
-        audio: false
-      });
+      clearInterval(intervaloProgresso);
 
+      mostrarTela(scanner);
+
+      const carregando = document.getElementById("carregando-camera");
+      const mensagem = document.getElementById("mensagem-leitura");
+
+      carregando.classList.add("visivel");
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" } },
+          audio: false
+        });
+
+        const video = document.getElementById("video-camera");
+
+        video.srcObject = stream;
+        await video.play();
+
+        carregando.classList.remove("visivel");
+        mensagem.textContent = "Posicione o QR Code na moldura";
+
+      } catch (erro) {
+        carregando.classList.remove("visivel");
+
+        mensagem.textContent =
+          "Não foi possível acessar a câmera. Verifique a permissão do navegador.";
+      }
+    });
+
+    // Parar a câmera
+    document.getElementById("parar-scanner").addEventListener("click", () => {
       const video = document.getElementById("video-camera");
-      video.srcObject = stream;
-      await video.play();
 
-      carregando.classList.remove("visivel");
-      mensagem.textContent = "Posicione o QR Code na moldura";
-    } catch (erro) {
-      carregando.classList.remove("visivel");
-      mensagem.textContent =
-        "Não foi possível acessar a câmera. Verifique a permissão do navegador.";
-    }
-  });
+      if (video.srcObject) {
+        video.srcObject.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+      }
 
-  // Parar a câmera
-  document.getElementById("parar-scanner").addEventListener("click", () => {
-    const video = document.getElementById("video-camera");
+      mostrarTela(instrucoes);
+    });
 
-    if (video.srcObject) {
-      video.srcObject.getTracks().forEach(track => track.stop());
-      video.srcObject = null;
-    }
+    // Lanterna: apenas em dispositivos compatíveis
+    document.getElementById("lanterna").addEventListener("click", async () => {
+      const video = document.getElementById("video-camera");
+      const stream = video.srcObject;
 
-    mostrarTela(instrucoes);
-  });
+      if (!stream) {
+        alert("A câmera ainda não está ativa.");
+        return;
+      }
 
-  // Lanterna: disponível apenas em câmeras/dispositivos compatíveis
-  document.getElementById("lanterna").addEventListener("click", async () => {
-    const video = document.getElementById("video-camera");
-    const stream = video.srcObject;
+      const faixa = stream.getVideoTracks()[0];
+      const recursos = faixa.getCapabilities?.();
 
-    if (!stream) {
-      alert("A câmera ainda não está ativa.");
-      return;
-    }
+      if (!recursos || !recursos.torch) {
+        alert("A lanterna não é compatível com este dispositivo ou navegador.");
+        return;
+      }
 
-    const faixa = stream.getVideoTracks()[0];
-    const recursos = faixa.getCapabilities?.();
+      const ligada = faixa.getSettings().torch === true;
 
-    if (!recursos || !recursos.torch) {
-      alert("A lanterna não é compatível com este dispositivo ou navegador.");
-      return;
-    }
-
-    const ligada = faixa.getSettings().torch === true;
-
-    try {
-      await faixa.applyConstraints({
-        advanced: [{ torch: !ligada }]
-      });
-    } catch {
-      alert("Não foi possível alterar a lanterna.");
-    }
-  });
-</script>
+      try {
+        await faixa.applyConstraints({
+          advanced: [{ torch: !ligada }]
+        });
+      } catch {
+        alert("Não foi possível alterar a lanterna.");
+      }
+    });
+  </script>
 </body>
 </html>
-
