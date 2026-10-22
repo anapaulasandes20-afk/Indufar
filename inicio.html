@@ -623,7 +623,7 @@ function mostrarTela(tela) {
   tela.classList.add("ativa");
 }
 
-setTimeout(() => mostrarTela(permissao), 1200);
+mostrarTela(permissao);
 
 document.getElementById("continuar").addEventListener("click", () => {
   mostrarTela(instrucoes);
