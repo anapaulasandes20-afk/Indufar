@@ -235,19 +235,31 @@
 }
 
 .progresso {
-  height: 12px;
   width: 100%;
+  height: 10px;
   overflow: hidden;
   border-radius: 20px;
   background: #dedee5;
-  margin: 14px 0;
+  margin: 14px 0 4px;
 }
 
 .progresso span {
   display: block;
-  width: 100%;
+  width: 0%;
   height: 100%;
+  border-radius: 20px;
   background: linear-gradient(90deg, #327cff, #9739ef);
+  transition: width 0.1s linear;
+}
+
+.porcentagem-progresso {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 16px;
+}
 }
 
 .botao-proximo {
@@ -469,19 +481,14 @@
   </section>
 
 <!-- ETAPA 3: instruções de leitura -->
-<section id="instrucoes" class="tela">
-  <div class="cartao-instrucoes">
-    <div class="passo">
-      <span class="numero-passo">1</span>
-      <div>
-        <h2>Escaneie seu produto</h2>
-        <p>Escaneie o código QR do produto.</p>
-        <div style="font-size:54px;color:#aaa;margin-top:8px;">▦</div>
-      </div>
-    </div>
+<div class="progresso">
+  <span id="barra-progresso"></span>
+</div>
 
-    <div class="passo">
-      <span class="numero-passo">2</span>
+<span
+  class="porcentagem-progresso"
+  id="porcentagem-progresso"
+>0%</span>
       <div>
         <h2>Procure boa iluminação</h2>
         <p>Certifique-se de estar em um lugar bem iluminado.</p>
@@ -571,10 +578,31 @@
     mostrarTela(permissao);
   }, 1200);
 
-  // ETAPA 2 -> ETAPA 3
-  document.getElementById("continuar").addEventListener("click", () => {
-    mostrarTela(instrucoes);
-  });
+ // ETAPA 2 -> ETAPA 3 + barra de progresso
+document.getElementById("continuar").addEventListener("click", () => {
+  mostrarTela(instrucoes);
+
+  const barra = document.getElementById("barra-progresso");
+  const porcentagem = document.getElementById("porcentagem-progresso");
+
+  if (!barra || !porcentagem) return;
+
+  clearInterval(window.intervaloProgresso);
+
+  let valor = 0;
+  barra.style.width = "0%";
+  porcentagem.textContent = "0%";
+
+  window.intervaloProgresso = setInterval(() => {
+    valor = Math.min(valor + 1, 100);
+    barra.style.width = valor + "%";
+    porcentagem.textContent = valor + "%";
+
+    if (valor >= 100) {
+      clearInterval(window.intervaloProgresso);
+    }
+  }, 50);
+});
 
   // Exige que a pessoa marque o consentimento
   const aceite = document.getElementById("aceite-privacidade");
