@@ -442,9 +442,6 @@
       display: grid;
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
 
 <body>
@@ -597,199 +594,152 @@
   </section>
 
   <script>
-    
-<script>
-const apresentacao = document.getElementById("apresentacao");
-const permissao = document.getElementById("permissao");
-const instrucoes = document.getElementById("instrucoes");
-const scanner = document.getElementById("scanner");
+    const apresentacao = document.getElementById("apresentacao");
+    const permissao = document.getElementById("permissao");
+    const instrucoes = document.getElementById("instrucoes");
+    const scanner = document.getElementById("scanner");
 
-const video = document.getElementById("video-camera");
-const carregando = document.getElementById("carregando-camera");
-const mensagem = document.getElementById("mensagem-leitura");
-const aceite = document.getElementById("aceite-privacidade");
-const irScanner = document.getElementById("ir-scanner");
+    function mostrarTela(tela) {
+      document.querySelectorAll(".tela").forEach(elemento => {
+        elemento.classList.remove("ativa");
+      });
 
-let streamAtual = null;
-let lendoQR = false;
-let intervaloProgresso = null;
-let canvas = document.createElement("canvas");
-let contexto = canvas.getContext("2d", { willReadFrequently: true });
+      tela.classList.add("ativa");
+    }
 
-function mostrarTela(tela) {
-  document.querySelectorAll(".tela").forEach(el => {
-    el.classList.remove("ativa");
-  });
-  tela.classList.add("ativa");
-}
+    // ETAPA 1: apresentação rápida
+    setTimeout(() => {
+      mostrarTela(permissao);
+    }, 1200);
 
-setTimeout(() => mostrarTela(permissao), 1200);
+    // ETAPA 2 -> ETAPA 3
+    document.getElementById("continuar").addEventListener("click", () => {
+      mostrarTela(instrucoes);
+    });
 
-document.getElementById("continuar").addEventListener("click", () => {
-  mostrarTela(instrucoes);
-});
+    // Barra de progresso na tela de instruções
+    const barraProgresso = document.getElementById("barra-progresso");
+    const porcentagemProgresso = document.getElementById(
+      "porcentagem-progresso"
+    );
 
-aceite.addEventListener("change", () => {
-  irScanner.disabled = !aceite.checked;
+    let intervaloProgresso = null;
 
-  const barra = document.getElementById("barra-progresso");
-  const porcentagem = document.getElementById("porcentagem-progresso");
+    function iniciarProgresso() {
+      clearInterval(intervaloProgresso);
 
-  clearInterval(intervaloProgresso);
-  barra.style.width = "0%";
-  porcentagem.textContent = "0%";
+      let valor = 0;
 
-  if (aceite.checked) {
-    let valor = 0;
-    intervaloProgresso = setInterval(() => {
-      valor = Math.min(valor + 1, 100);
-      barra.style.width = valor + "%";
-      porcentagem.textContent = valor + "%";
-      if (valor === 100) clearInterval(intervaloProgresso);
-    }, 30);
-  }
-});
+      barraProgresso.style.width = "0%";
+      porcentagemProgresso.textContent = "0%";
 
-async function iniciarScanner() {
-  if (!aceite.checked) return;
+      intervaloProgresso = setInterval(() => {
+        valor = Math.min(valor + 1, 100);
 
-  mostrarTela(scanner);
-  carregando.classList.add("visivel");
-  mensagem.textContent = "Preparando leitor de QR Code...";
-  
-  if (typeof jsQR !== "function") {
-    carregando.classList.remove("visivel");
-    mensagem.textContent = "Falha ao carregar o leitor. Atualize a página.";
-    return;
-  }
+        barraProgresso.style.width = valor + "%";
+        porcentagemProgresso.textContent = valor + "%";
 
-  try {
-    pararCamera();
+        if (valor >= 100) {
+          clearInterval(intervaloProgresso);
+          intervaloProgresso = null;
+        }
+      }, 50);
+    }
 
-    streamAtual = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: {
-        facingMode: { ideal: "environment" },
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
+    // Exige consentimento antes de liberar o scanner
+    const aceite = document.getElementById("aceite-privacidade");
+    const irScanner = document.getElementById("ir-scanner");
+
+    aceite.addEventListener("change", () => {
+      irScanner.disabled = !aceite.checked;
+
+      if (aceite.checked) {
+        iniciarProgresso();
+      } else {
+        clearInterval(intervaloProgresso);
+        intervaloProgresso = null;
+        barraProgresso.style.width = "0%";
+        porcentagemProgresso.textContent = "0%";
       }
     });
 
-    video.srcObject = streamAtual;
-    await video.play();
+    // ETAPA 3 -> ETAPA 4
+    irScanner.addEventListener("click", async () => {
+      if (!aceite.checked) {
+        return;
+      }
 
-    carregando.classList.remove("visivel");
-    mensagem.textContent = "Posicione o QR Code na moldura";
-    lendoQR = true;
-    requestAnimationFrame lerQuadro);
+      clearInterval(intervaloProgresso);
 
-  } catch (erro) {
-    carregando.classList.remove("visivel");
-    mensagem.textContent =
-      "Não foi possível abrir a câmera. Permita o acesso e tente novamente.";
-    console.error("Erro ao abrir câmera:", erro);
-  }
-}
+      mostrarTela(scanner);
 
-function lerQuadro() {
-  if (!lendoQR || !streamAtual) return;
+      const carregando = document.getElementById("carregando-camera");
+      const mensagem = document.getElementById("mensagem-leitura");
 
-  if (video.readyState >= video.HAVE_ENOUGH_DATA) {
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    contexto.drawImage(video, 0, 0, canvas.width, canvas.height);
+      carregando.classList.add("visivel");
 
-    const imagem = contexto.getImageData(
-      0, 0, canvas.width, canvas.height
-    );
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" } },
+          audio: false
+        });
 
-    const resultado = jsQR(imagem.data, imagem.width, imagem.height, {
-      inversionAttempts: "attemptBoth"
+        const video = document.getElementById("video-camera");
+
+        video.srcObject = stream;
+        await video.play();
+
+        carregando.classList.remove("visivel");
+        mensagem.textContent = "Posicione o QR Code na moldura";
+
+      } catch (erro) {
+        carregando.classList.remove("visivel");
+
+        mensagem.textContent =
+          "Não foi possível acessar a câmera. Verifique a permissão do navegador.";
+      }
     });
 
-    if (resultado && resultado.data) {
-      lendoQR = false;
-      mensagem.textContent = "QR Code encontrado!";
-      processarQR(resultado.data.trim());
-      return;
-    }
-  }
+    // Parar a câmera
+    document.getElementById("parar-scanner").addEventListener("click", () => {
+      const video = document.getElementById("video-camera");
 
-  requestAnimationFrame(lerQuadro);
-}
+      if (video.srcObject) {
+        video.srcObject.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+      }
 
-function processarQR(conteudo) {
-  pararCamera();
-
-  // Se o QR já contém um link do site, abre esse link.
-  try {
-    const url = new URL(conteudo);
-
-    if (
-      url.protocol === "https:" &&
-      url.hostname === "dsaokod.vercel.app"
-    ) {
-      window.location.href = url.href;
-      return;
-    }
-  } catch (_) {}
-
-  // Se o QR contém apenas o código do produto,
-  // abre a página de autenticação com esse código.
-  window.location.href =
-    "https://dsaokod.vercel.app/autenticar.html?codigo=" +
-    encodeURIComponent(conteudo);
-}
-
-function pararCamera() {
-  lendoQR = false;
-
-  if (streamAtual) {
-    streamAtual.getTracks().forEach(track => track.stop());
-    streamAtual = null;
-  }
-
-  if (video.srcObject) {
-    video.srcObject = null;
-  }
-}
-
-irScanner.addEventListener("click", iniciarScanner);
-
-document.getElementById("parar-scanner").addEventListener("click", () => {
-  pararCamera();
-  mostrarTela(instrucoes);
-});
-
-document.getElementById("lanterna").addEventListener("click", async () => {
-  if (!streamAtual) {
-    alert("A câmera não está ativa.");
-    return;
-  }
-
-  const faixa = streamAtual.getVideoTracks()[0];
-  const capacidades = faixa.getCapabilities?.();
-
-  if (!capacidades?.torch) {
-    alert("A lanterna não é compatível com este aparelho.");
-    return;
-  }
-
-  try {
-    const ligada = faixa.getSettings().torch === true;
-    await faixa.applyConstraints({
-      advanced: [{ torch: !ligada }]
+      mostrarTela(instrucoes);
     });
-  } catch (erro) {
-    alert("Não foi possível ativar a lanterna.");
-  }
-});
 
-window.addEventListener("pagehide", pararCamera);
-</script>
+    // Lanterna: apenas em dispositivos compatíveis
+    document.getElementById("lanterna").addEventListener("click", async () => {
+      const video = document.getElementById("video-camera");
+      const stream = video.srcObject;
 
-</script>
+      if (!stream) {
+        alert("A câmera ainda não está ativa.");
+        return;
+      }
 
+      const faixa = stream.getVideoTracks()[0];
+      const recursos = faixa.getCapabilities?.();
+
+      if (!recursos || !recursos.torch) {
+        alert("A lanterna não é compatível com este dispositivo ou navegador.");
+        return;
+      }
+
+      const ligada = faixa.getSettings().torch === true;
+
+      try {
+        await faixa.applyConstraints({
+          advanced: [{ torch: !ligada }]
+        });
+      } catch {
+        alert("Não foi possível alterar a lanterna.");
+      }
+    });
   </script>
 </body>
 </html>
