@@ -4,593 +4,106 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AuthNow — Verificação de produto</title>
-
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      width: 100%;
-      min-height: 100%;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f4f8;
-      color: #111;
-    }
-
-    .tela {
-      display: none;
-      min-height: 100dvh;
-      width: 100%;
-    }
-
-    .tela.ativa {
-      display: flex;
-    }
-
-    /* Apresentação rápida */
-    #apresentacao {
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(ellipse at 20% 35%, #d5d2d1, transparent 50%),
-        linear-gradient(145deg, #5b5657, #211e1e);
-      color: white;
-      animation: aparecer 0.25s ease-out;
-    }
-
-    .marca-abertura {
-      text-align: center;
-      font-size: 16px;
-    }
-
-    .marca-abertura strong {
-      display: block;
-      margin-top: 58px;
-      font-size: 38px;
-      letter-spacing: -1px;
-    }
-
-    /* Tela de apresentação */
-    #permissao {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 18px;
-      background: #f5f3f7;
-    }
-
-    .aviso-app {
-      position: absolute;
-      top: 0;
-      left: 12px;
-      right: 12px;
-      min-height: 100px;
-      padding: 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(255,255,255,.96);
-      border-radius: 18px;
-      box-shadow: 0 3px 15px #0000000d;
-    }
-
-    .aviso-app img {
-      width: 62px;
-      height: 62px;
-      border-radius: 13px;
-      object-fit: cover;
-    }
-
-    .aviso-texto {
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    .aviso-texto strong {
-      display: block;
-      font-size: 17px;
-    }
-
-    .cartao {
-      width: 100%;
-      max-width: 440px;
-      margin-top: 85px;
-      padding: 28px 22px 30px;
-      text-align: center;
-      background: white;
-      border-radius: 28px;
-    }
-
-    .icone-localizacao {
-      width: 78px;
-      height: 78px;
-      margin: 0 auto 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0878f9;
-      color: white;
-      font-size: 48px;
-      font-weight: bold;
-      transform: rotate(-8deg);
-    }
-
-    .cartao h1 {
-      margin: 0 0 22px;
-      font-size: clamp(23px, 5.4vw, 30px);
-      line-height: 1.2;
-    }
-
-    .cartao p {
-      margin: 0 0 32px;
-      font-size: clamp(17px, 4.4vw, 22px);
-      line-height: 1.4;
-    }
-
-    .botao {
-      border: 0;
-      border-radius: 10px;
-      padding: 16px 32px;
-      min-width: 200px;
-      background: #0878f9;
-      color: white;
-      font-size: 19px;
-      cursor: pointer;
-    }
-
-    .botao:active {
-      transform: scale(.98);
-    }
-
-    @keyframes aparecer {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @media (max-height: 700px) {
-      .cartao {
-        margin-top: 95px;
-        padding: 20px;
-      }
-
-      .icone-localizacao {
-        margin-bottom: 22px;
-      }
-
-      .cartao p {
-        margin-bottom: 22px;
-      }
-    }
-
-    /* Logo INDUFAR */
-    .logo-indufar {
-      width: 125px;
-      max-height: 90px;
-      object-fit: contain;
-      margin: 12px auto 22px;
-    }
-
-    /* Tela das instruções */
-    #instrucoes {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 18px;
-      background: linear-gradient(140deg, #20204d, #3027a4);
-      color: #111;
-    }
-
-    .cartao-instrucoes {
-      width: 100%;
-      max-width: 440px;
-      padding: 28px 22px;
-      background: #fff;
-      border-radius: 16px;
-    }
-
-    .passo {
-      display: grid;
-      grid-template-columns: 48px 1fr;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
-    .numero-passo {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      color: white;
-      font-size: 21px;
-      background: linear-gradient(135deg, #367cff, #9638ed);
-    }
-
-    .passo h2 {
-      font-size: 20px;
-      margin: 5px 0 8px;
-    }
-
-    .passo p {
-      margin: 0;
-      color: #666;
-      font-size: 17px;
-      line-height: 1.45;
-    }
-
-    .privacidade {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      padding: 14px;
-      margin: 12px 0 16px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    /* Barra de progresso */
-    .progresso {
-      height: 12px;
-      width: 100%;
-      overflow: hidden;
-      border-radius: 20px;
-      background: #dedee5;
-      margin: 14px 0 5px;
-    }
-
-    .progresso span {
-      display: block;
-      width: 0%;
-      height: 100%;
-      border-radius: 20px;
-      background: linear-gradient(90deg, #327cff, #9739ef);
-      transition: width 0.05s linear;
-    }
-
-    .porcentagem-progresso {
-      display: block;
-      width: 100%;
-      text-align: center;
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 18px;
-    }
-
-    .botao-proximo {
-      width: 100%;
-      border: 0;
-      border-radius: 10px;
-      padding: 15px;
-      background: #0878f9;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    .botao-proximo:disabled {
-      opacity: .45;
-      cursor: not-allowed;
-    }
-
-    /* Tela do scanner */
-    #scanner {
-      flex-direction: column;
-      align-items: center;
-      min-height: 100dvh;
-      padding: 16px 18px 28px;
-      color: white;
-      background: linear-gradient(125deg, #303e9c, #4931d5);
-    }
-
-    .topo-scanner {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .menu-scanner {
-      width: 48px;
-      height: 48px;
-      background: white;
-      color: #222;
-      border: 0;
-      border-radius: 12px;
-      font-size: 27px;
-    }
-
-    .area-leitura {
-      position: relative;
-      width: 100%;
-      max-width: 440px;
-      aspect-ratio: 0.83;
-      max-height: 48dvh;
-      min-height: 260px;
-      margin-top: 10px;
-      border: 2px solid #aaa;
-      border-radius: 18px;
-      background: #27242b;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-    }
-
-    #video-camera {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      inset: 0;
-    }
-
-    .quadrado-qr {
-      position: relative;
-      width: 68%;
-      aspect-ratio: 1;
-      z-index: 1;
-      background: #ffffff10;
-      border-radius: 12px;
-    }
-
-    .canto {
-      position: absolute;
-      width: 45px;
-      height: 45px;
-      border-color: #70d64c;
-      border-style: solid;
-    }
-
-    .canto.tl {
-      top: 0;
-      left: 0;
-      border-width: 4px 0 0 4px;
-      border-radius: 20px 0 0;
-    }
-
-    .canto.tr {
-      top: 0;
-      right: 0;
-      border-width: 4px 4px 0 0;
-      border-radius: 0 20px 0 0;
-    }
-
-    .canto.bl {
-      bottom: 0;
-      left: 0;
-      border-width: 0 0 4px 4px;
-      border-radius: 0 0 0 20px;
-    }
-
-    .canto.br {
-      bottom: 0;
-      right: 0;
-      border-width: 0 4px 4px 0;
-      border-radius: 0 0 20px;
-    }
-
-    .faixa-leitura {
-      position: absolute;
-      z-index: 2;
-      top: 48%;
-      width: 100%;
-      padding: 12px 4px;
-      text-align: center;
-      background: #0008;
-      color: #9ae875;
-      font-size: 17px;
-      font-weight: bold;
-    }
-
-    .lanterna {
-      align-self: flex-end;
-      margin-top: -48px;
-      z-index: 3;
-      width: 54px;
-      height: 54px;
-      border: 0;
-      border-radius: 50%;
-      color: white;
-      background: #171b38;
-      font-size: 24px;
-    }
-
-    .barra-scanner {
-      width: 100%;
-      height: 12px;
-      border-radius: 20px;
-      background: white;
-      margin: 28px 0;
-    }
-
-    .texto-distancia {
-      margin: 24px 0 36px;
-      text-align: center;
-      font-size: 19px;
-      font-weight: bold;
-    }
-
-    .parar-scanner {
-      width: 100%;
-      margin-top: auto;
-      border: 0;
-      border-radius: 10px;
-      padding: 17px;
-      background: linear-gradient(90deg, #24a52b, #56d84e);
-      color: white;
-      font-size: 20px;
-    }
-
-    .mensagem-camera {
-      position: absolute;
-      z-index: 5;
-      inset: 0;
-      display: none;
-      place-items: center;
-      padding: 30px;
-      text-align: center;
-      color: white;
-      background: #000b;
-      font-size: 20px;
-    }
-
-    .mensagem-camera.visivel {
-      display: grid;
-    }
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#f5f4f8;color:#111}
+    .tela{display:none;min-height:100dvh;width:100%}
+    .tela.ativa{display:flex}
+    #apresentacao{align-items:center;justify-content:center;background:radial-gradient(ellipse at 20% 35%,#d5d2d1,transparent 50%),linear-gradient(145deg,#5b5657,#211e1e);color:white;animation:aparecer .25s ease-out}
+    .marca-abertura{text-align:center;font-size:16px}
+    .marca-abertura strong{display:block;margin-top:58px;font-size:38px;letter-spacing:-1px}
+    #permissao{flex-direction:column;align-items:center;justify-content:center;padding:24px 18px;background:#f5f3f7}
+    .aviso-app{position:absolute;top:0;left:12px;right:12px;min-height:100px;padding:14px;display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.96);border-radius:18px;box-shadow:0 3px 15px #0000000d}
+    .aviso-app img{width:62px;height:62px;border-radius:13px;object-fit:cover}
+    .aviso-texto{font-size:14px;line-height:1.35}
+    .aviso-texto strong{display:block;font-size:17px}
+    .cartao{width:100%;max-width:440px;margin-top:85px;padding:28px 22px 30px;text-align:center;background:white;border-radius:28px}
+    .icone-localizacao{width:78px;height:78px;margin:0 auto 38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#0878f9;color:white;font-size:48px;font-weight:bold;transform:rotate(-8deg)}
+    .cartao h1{margin:0 0 22px;font-size:clamp(23px,5.4vw,30px);line-height:1.2}
+    .cartao p{margin:0 0 32px;font-size:clamp(17px,4.4vw,22px);line-height:1.4}
+    .botao{border:0;border-radius:10px;padding:16px 32px;min-width:200px;background:#0878f9;color:white;font-size:19px;cursor:pointer}
+    .botao:active{transform:scale(.98)}
+    @keyframes aparecer{from{opacity:0}to{opacity:1}}
+    @media(max-height:700px){.cartao{margin-top:95px;padding:20px}.icone-localizacao{margin-bottom:22px}.cartao p{margin-bottom:22px}}
+    .logo-indufar{width:125px;max-height:90px;object-fit:contain;margin:12px auto 22px}
+    #instrucoes{flex-direction:column;align-items:center;justify-content:center;padding:24px 18px;background:linear-gradient(140deg,#20204d,#3027a4);color:#111}
+    .cartao-instrucoes{width:100%;max-width:440px;padding:28px 22px;background:#fff;border-radius:16px}
+    .passo{display:grid;grid-template-columns:48px 1fr;gap:12px;margin-bottom:28px}
+    .numero-passo{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;color:white;font-size:21px;background:linear-gradient(135deg,#367cff,#9638ed)}
+    .passo h2{font-size:20px;margin:5px 0 8px}
+    .passo p{margin:0;color:#666;font-size:17px;line-height:1.45}
+    .privacidade{display:flex;gap:10px;align-items:flex-start;padding:14px;margin:12px 0 16px;border:1px solid #ddd;border-radius:12px;font-size:14px;line-height:1.5}
+    .progresso{height:12px;width:100%;overflow:hidden;border-radius:20px;background:#dedee5;margin:14px 0 5px}
+    .progresso span{display:block;width:0%;height:100%;border-radius:20px;background:linear-gradient(90deg,#327cff,#9739ef);transition:width .05s linear}
+    .porcentagem-progresso{display:block;width:100%;text-align:center;font-size:14px;color:#666;margin-bottom:18px}
+    .botao-proximo{width:100%;border:0;border-radius:10px;padding:15px;background:#0878f9;color:white;font-size:18px;cursor:pointer}
+    .botao-proximo:disabled{opacity:.45;cursor:not-allowed}
+    #scanner{flex-direction:column;align-items:center;min-height:100dvh;padding:16px 18px 28px;color:white;background:linear-gradient(125deg,#303e9c,#4931d5)}
+    .topo-scanner{width:100%;display:flex;align-items:center;justify-content:space-between}
+    .menu-scanner{width:48px;height:48px;background:white;color:#222;border:0;border-radius:12px;font-size:27px}
+    .area-leitura{position:relative;width:100%;max-width:440px;aspect-ratio:.83;max-height:48dvh;min-height:260px;margin-top:10px;border:2px solid #aaa;border-radius:18px;background:#27242b;display:grid;place-items:center;overflow:hidden}
+    #video-camera{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+    .quadrado-qr{position:relative;width:68%;aspect-ratio:1;z-index:1;background:#ffffff10;border-radius:12px;pointer-events:none}
+    .canto{position:absolute;width:45px;height:45px;border-color:#70d64c;border-style:solid}
+    .canto.tl{top:0;left:0;border-width:4px 0 0 4px;border-radius:20px 0 0}
+    .canto.tr{top:0;right:0;border-width:4px 4px 0 0;border-radius:0 20px 0 0}
+    .canto.bl{bottom:0;left:0;border-width:0 0 4px 4px;border-radius:0 0 0 20px}
+    .canto.br{bottom:0;right:0;border-width:0 4px 4px 0;border-radius:0 0 20px}
+    .faixa-leitura{position:absolute;z-index:2;top:48%;width:100%;padding:12px 4px;text-align:center;background:#0008;color:#9ae875;font-size:17px;font-weight:bold;pointer-events:none}
+    .lanterna{align-self:flex-end;margin-top:-48px;z-index:3;width:54px;height:54px;border:0;border-radius:50%;color:white;background:#171b38;font-size:24px}
+    .barra-scanner{width:100%;height:12px;border-radius:20px;background:white;margin:28px 0}
+    .texto-distancia{margin:24px 0 36px;text-align:center;font-size:19px;font-weight:bold}
+    .parar-scanner{width:100%;margin-top:auto;border:0;border-radius:10px;padding:17px;background:linear-gradient(90deg,#24a52b,#56d84e);color:white;font-size:20px}
+    .mensagem-camera{position:absolute;z-index:5;inset:0;display:none;place-items:center;padding:30px;text-align:center;color:white;background:#000b;font-size:20px}
+    .mensagem-camera.visivel{display:grid}
   </style>
+  <!-- jsQR lê QR Codes; qrcodejs é uma biblioteca de geração e não é necessária para leitura. -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
-
 <body>
-
-  <!-- ETAPA 1: apresentação rápida -->
   <section id="apresentacao" class="tela ativa">
-    <div class="marca-abertura">
-      <span>Fornecido por</span>
-      <strong>AuthNow</strong>
-    </div>
+    <div class="marca-abertura"><span>Fornecido por</span><strong>AuthNow</strong></div>
   </section>
 
-  <!-- ETAPA 2: tela de apresentação -->
   <section id="permissao" class="tela">
     <div class="aviso-app">
       <img src="assets/authnow-logo.png" alt="Logo AuthNow">
-      <div class="aviso-texto">
-        Fornecido por
-        <strong>AuthNow – Product Verification</strong>
-        Instant Product Authentication
-      </div>
+      <div class="aviso-texto">Fornecido por<strong>AuthNow – Product Verification</strong>Instant Product Authentication</div>
     </div>
-
     <div class="cartao">
       <div class="icone-localizacao" aria-hidden="true">➤</div>
-
       <h1>Ajude a Combater a Falsificação</h1>
-
-      <p>
-        Compartilhe sua localização para nos ajudar a verificar a autenticidade
-        do produto. Seus dados de localização nos permitem distinguir produtos
-        genuínos de falsificações com base na distribuição geográfica.
-      </p>
-
-      <button class="botao" id="continuar" type="button">
-        Continuar
-      </button>
+      <p>Compartilhe sua localização para nos ajudar a verificar a autenticidade do produto. Seus dados de localização nos permitem distinguir produtos genuínos de falsificações com base na distribuição geográfica.</p>
+      <button class="botao" id="continuar" type="button">Continuar</button>
     </div>
   </section>
 
-  <!-- ETAPA 3: instruções de leitura -->
   <section id="instrucoes" class="tela">
     <div class="cartao-instrucoes">
-
-      <div class="passo">
-        <span class="numero-passo">1</span>
-        <div>
-          <h2>Escaneie seu produto</h2>
-          <p>Escaneie o código QR do produto.</p>
-          <div style="font-size:54px;color:#aaa;margin-top:8px;">▦</div>
-        </div>
-      </div>
-
-      <div class="passo">
-        <span class="numero-passo">2</span>
-        <div>
-          <h2>Procure boa iluminação</h2>
-          <p>Certifique-se de estar em um lugar bem iluminado.</p>
-        </div>
-      </div>
-
-      <div class="passo">
-        <span class="numero-passo">3</span>
-        <div>
-          <h2>Ajuste a distância</h2>
-          <p>Aproxime-se e afaste-se conforme as instruções.</p>
-        </div>
-      </div>
-
-      <label class="privacidade">
-        <input type="checkbox" id="aceite-privacidade">
-        <span>
-          Concordo com a
-          <a href="politica-privacidade.html">Política de Privacidade</a>
-          (uso da câmera e localização para validação de QR).
-        </span>
-      </label>
-
-      <!-- Barra e porcentagem -->
-      <div class="progresso">
-        <span id="barra-progresso"></span>
-      </div>
-
-      <span
-        class="porcentagem-progresso"
-        id="porcentagem-progresso"
-      >0%</span>
-
-      <button class="botao-proximo" id="ir-scanner" disabled>
-        Continuar
-      </button>
+      <div class="passo"><span class="numero-passo">1</span><div><h2>Escaneie seu produto</h2><p>Escaneie o código QR do produto.</p><div style="font-size:54px;color:#aaa;margin-top:8px;">▦</div></div></div>
+      <div class="passo"><span class="numero-passo">2</span><div><h2>Procure boa iluminação</h2><p>Certifique-se de estar em um lugar bem iluminado.</p></div></div>
+      <div class="passo"><span class="numero-passo">3</span><div><h2>Ajuste a distância</h2><p>Aproxime-se e afaste-se conforme as instruções.</p></div></div>
+      <label class="privacidade"><input type="checkbox" id="aceite-privacidade"><span>Concordo com a <a href="politica-privacidade.html">Política de Privacidade</a> (uso da câmera e localização para validação de QR).</span></label>
+      <div class="progresso"><span id="barra-progresso"></span></div>
+      <span class="porcentagem-progresso" id="porcentagem-progresso">0%</span>
+      <button class="botao-proximo" id="ir-scanner" disabled>Continuar</button>
     </div>
   </section>
 
-  <!-- ETAPA 4: câmera -->
   <section id="scanner" class="tela">
-    <div class="topo-scanner">
-      <button
-        class="menu-scanner"
-        type="button"
-        aria-label="Menu"
-      >☰</button>
-    </div>
-
-    <img
-      class="logo-indufar"
-      src="assets/indufar-logo.png"
-      alt="INDUFAR"
-    >
-
+    <div class="topo-scanner"><button class="menu-scanner" type="button" aria-label="Menu">☰</button></div>
+    <img class="logo-indufar" src="assets/indufar-logo.png" alt="INDUFAR">
     <div class="area-leitura">
       <video id="video-camera" autoplay playsinline muted></video>
-
-      <div class="quadrado-qr" aria-hidden="true">
-        <span class="canto tl"></span>
-        <span class="canto tr"></span>
-        <span class="canto bl"></span>
-        <span class="canto br"></span>
-      </div>
-
-      <div class="faixa-leitura" id="mensagem-leitura">
-        Posicione o QR Code na moldura
-      </div>
-
-      <div class="mensagem-camera" id="carregando-camera">
-        Carregando... Por favor, aguarde.
-      </div>
+      <div class="quadrado-qr" aria-hidden="true"><span class="canto tl"></span><span class="canto tr"></span><span class="canto bl"></span><span class="canto br"></span></div>
+      <div class="faixa-leitura" id="mensagem-leitura">Posicione o QR Code na moldura</div>
+      <div class="mensagem-camera" id="carregando-camera">Carregando... Por favor, aguarde.</div>
     </div>
-
-    <button
-      class="lanterna"
-      id="lanterna"
-      type="button"
-      aria-label="Lanterna"
-    >🔦</button>
-
+    <button class="lanterna" id="lanterna" type="button" aria-label="Lanterna">🔦</button>
     <div class="barra-scanner"></div>
-
-    <div style="font-size:28px;background:white;color:#3735a4;border-radius:50%;width:42px;height:42px;display:grid;place-items:center;">
-      i
-    </div>
-
-    <p class="texto-distancia" id="texto-distancia">
-      Afaste-se um pouco mais
-    </p>
-
-    <button class="parar-scanner" id="parar-scanner" type="button">
-      Parar
-    </button>
+    <div style="font-size:28px;background:white;color:#3735a4;border-radius:50%;width:42px;height:42px;display:grid;place-items:center;">i</div>
+    <p class="texto-distancia" id="texto-distancia">Afaste-se um pouco mais</p>
+    <button class="parar-scanner" id="parar-scanner" type="button">Parar</button>
   </section>
 
   <script>
@@ -598,148 +111,182 @@
     const permissao = document.getElementById("permissao");
     const instrucoes = document.getElementById("instrucoes");
     const scanner = document.getElementById("scanner");
+    const video = document.getElementById("video-camera");
+    const carregando = document.getElementById("carregando-camera");
+    const mensagem = document.getElementById("mensagem-leitura");
+    const aceite = document.getElementById("aceite-privacidade");
+    const irScanner = document.getElementById("ir-scanner");
+    const barra = document.getElementById("barra-progresso");
+    const porcentagem = document.getElementById("porcentagem-progresso");
+
+    let streamAtual = null;
+    let lendoQR = false;
+    let qrEncontrado = false;
+    let intervaloProgresso = null;
+    const canvas = document.createElement("canvas");
+    const contexto = canvas.getContext("2d", { willReadFrequently: true });
 
     function mostrarTela(tela) {
-      document.querySelectorAll(".tela").forEach(elemento => {
-        elemento.classList.remove("ativa");
-      });
-
+      document.querySelectorAll(".tela").forEach(el => el.classList.remove("ativa"));
       tela.classList.add("ativa");
     }
 
-    // ETAPA 1: apresentação rápida
-    setTimeout(() => {
-      mostrarTela(permissao);
-    }, 1200);
+    setTimeout(() => mostrarTela(permissao), 1200);
 
-    // ETAPA 2 -> ETAPA 3
     document.getElementById("continuar").addEventListener("click", () => {
       mostrarTela(instrucoes);
     });
 
-    // Barra de progresso na tela de instruções
-    const barraProgresso = document.getElementById("barra-progresso");
-    const porcentagemProgresso = document.getElementById(
-      "porcentagem-progresso"
-    );
-
-    let intervaloProgresso = null;
-
-    function iniciarProgresso() {
-      clearInterval(intervaloProgresso);
-
-      let valor = 0;
-
-      barraProgresso.style.width = "0%";
-      porcentagemProgresso.textContent = "0%";
-
-      intervaloProgresso = setInterval(() => {
-        valor = Math.min(valor + 1, 100);
-
-        barraProgresso.style.width = valor + "%";
-        porcentagemProgresso.textContent = valor + "%";
-
-        if (valor >= 100) {
-          clearInterval(intervaloProgresso);
-          intervaloProgresso = null;
-        }
-      }, 50);
-    }
-
-    // Exige consentimento antes de liberar o scanner
-    const aceite = document.getElementById("aceite-privacidade");
-    const irScanner = document.getElementById("ir-scanner");
-
     aceite.addEventListener("change", () => {
       irScanner.disabled = !aceite.checked;
+      clearInterval(intervaloProgresso);
+      barra.style.width = "0%";
+      porcentagem.textContent = "0%";
 
       if (aceite.checked) {
-        iniciarProgresso();
-      } else {
-        clearInterval(intervaloProgresso);
-        intervaloProgresso = null;
-        barraProgresso.style.width = "0%";
-        porcentagemProgresso.textContent = "0%";
+        let valor = 0;
+        intervaloProgresso = setInterval(() => {
+          valor = Math.min(valor + 1, 100);
+          barra.style.width = valor + "%";
+          porcentagem.textContent = valor + "%";
+          if (valor >= 100) {
+            clearInterval(intervaloProgresso);
+            intervaloProgresso = null;
+          }
+        }, 30);
       }
     });
 
-    // ETAPA 3 -> ETAPA 4
-    irScanner.addEventListener("click", async () => {
-      if (!aceite.checked) {
+    async function iniciarScanner() {
+      if (!aceite.checked) return;
+
+      mostrarTela(scanner);
+      carregando.classList.add("visivel");
+      mensagem.textContent = "Preparando leitor de QR Code...";
+      qrEncontrado = false;
+
+      if (typeof window.jsQR !== "function") {
+        carregando.classList.remove("visivel");
+        mensagem.textContent = "Não foi possível carregar o leitor de QR. Verifique a conexão e recarregue a página.";
         return;
       }
 
-      clearInterval(intervaloProgresso);
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        carregando.classList.remove("visivel");
+        mensagem.textContent = "A câmera exige HTTPS e um navegador compatível.";
+        return;
+      }
 
-      mostrarTela(scanner);
-
-      const carregando = document.getElementById("carregando-camera");
-      const mensagem = document.getElementById("mensagem-leitura");
-
-      carregando.classList.add("visivel");
+      pararCamera();
 
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" } },
-          audio: false
+        streamAtual = await navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } }
         });
 
-        const video = document.getElementById("video-camera");
-
-        video.srcObject = stream;
+        video.srcObject = streamAtual;
         await video.play();
 
         carregando.classList.remove("visivel");
         mensagem.textContent = "Posicione o QR Code na moldura";
-
+        lendoQR = true;
+        requestAnimationFrame(lerQuadro);
       } catch (erro) {
         carregando.classList.remove("visivel");
-
-        mensagem.textContent =
-          "Não foi possível acessar a câmera. Verifique a permissão do navegador.";
+        mensagem.textContent = "Não foi possível abrir a câmera. Permita o acesso e tente novamente.";
+        console.error("Erro ao abrir câmera:", erro);
+        pararCamera();
       }
-    });
+    }
 
-    // Parar a câmera
+    function lerQuadro() {
+      if (!lendoQR || !streamAtual) return;
+
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && video.videoWidth > 0) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        contexto.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        try {
+          const imagem = contexto.getImageData(0, 0, canvas.width, canvas.height);
+          const resultado = window.jsQR(imagem.data, imagem.width, imagem.height, {
+            inversionAttempts: "attemptBoth"
+          });
+
+          if (resultado && resultado.data && resultado.data.trim()) {
+            qrEncontrado = true;
+            lendoQR = false;
+            mensagem.textContent = "QR Code encontrado! Abrindo...";
+            const conteudo = resultado.data.trim();
+            pararCamera();
+            processarQR(conteudo);
+            return;
+          }
+        } catch (erro) {
+          console.error("Erro ao ler o QR Code:", erro);
+        }
+      }
+
+      if (lendoQR) requestAnimationFrame(lerQuadro);
+    }
+
+    function processarQR(conteudo) {
+      // Se o QR contém URL HTTPS do próprio site, abre a URL lida.
+      try {
+        const url = new URL(conteudo);
+        if (url.protocol === "https:" && url.hostname === "dsaokod.vercel.app") {
+          window.location.href = url.href;
+          return;
+        }
+      } catch (_) {}
+
+      // Para QR com identificador simples, envia o valor para a página de autenticação.
+      // Confirme que este arquivo existe no projeto e valida o código no servidor.
+      window.location.href =
+        "https://dsaokod.vercel.app/autenticar.html?codigo=" +
+        encodeURIComponent(conteudo);
+    }
+
+    function pararCamera() {
+      lendoQR = false;
+      if (streamAtual) {
+        streamAtual.getTracks().forEach(track => track.stop());
+        streamAtual = null;
+      }
+      if (video.srcObject) video.srcObject = null;
+    }
+
+    irScanner.addEventListener("click", iniciarScanner);
+
     document.getElementById("parar-scanner").addEventListener("click", () => {
-      const video = document.getElementById("video-camera");
-
-      if (video.srcObject) {
-        video.srcObject.getTracks().forEach(track => track.stop());
-        video.srcObject = null;
-      }
-
+      pararCamera();
       mostrarTela(instrucoes);
     });
 
-    // Lanterna: apenas em dispositivos compatíveis
     document.getElementById("lanterna").addEventListener("click", async () => {
-      const video = document.getElementById("video-camera");
-      const stream = video.srcObject;
-
-      if (!stream) {
-        alert("A câmera ainda não está ativa.");
+      if (!streamAtual) {
+        alert("A câmera não está ativa.");
         return;
       }
 
-      const faixa = stream.getVideoTracks()[0];
-      const recursos = faixa.getCapabilities?.();
+      const faixa = streamAtual.getVideoTracks()[0];
+      const capacidades = faixa.getCapabilities?.();
 
-      if (!recursos || !recursos.torch) {
-        alert("A lanterna não é compatível com este dispositivo ou navegador.");
+      if (!capacidades?.torch) {
+        alert("A lanterna não é compatível com este aparelho.");
         return;
       }
-
-      const ligada = faixa.getSettings().torch === true;
 
       try {
-        await faixa.applyConstraints({
-          advanced: [{ torch: !ligada }]
-        });
-      } catch {
-        alert("Não foi possível alterar a lanterna.");
+        const ligada = faixa.getSettings().torch === true;
+        await faixa.applyConstraints({ advanced: [{ torch: !ligada }] });
+      } catch (erro) {
+        alert("Não foi possível ativar a lanterna.");
       }
     });
+
+    window.addEventListener("pagehide", pararCamera);
   </script>
 </body>
 </html>
