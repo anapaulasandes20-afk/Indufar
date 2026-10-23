@@ -171,9 +171,9 @@
         return;
       }
 
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         carregando.classList.remove("visivel");
-        mensagem.textContent = "A câmera exige HTTPS e um navegador compatível.";
+        mensagem.textContent = "A câmera exige HTTPS. Abra o site pelo endereço https:// e tente novamente.";
         return;
       }
 
@@ -189,7 +189,7 @@
         await video.play();
 
         carregando.classList.remove("visivel");
-        mensagem.textContent = "Posicione o QR Code na moldura";
+        mensagem.textContent = "Lendo QR Code... centralize o código na moldura";
         lendoQR = true;
         requestAnimationFrame(lerQuadro);
       } catch (erro) {
@@ -200,31 +200,63 @@
       }
     }
 
-    function lerQuadro() {
+    let ultimoQuadroEm = 0;
+    let detectorNativo = null;
+
+    if ("BarcodeDetector" in window) {
+      try {
+        detectorNativo = new BarcodeDetector({ formats: ["qr_code"] });
+      } catch (erro) {
+        detectorNativo = null;
+      }
+    }
+
+    async function lerQuadro() {
       if (!lendoQR || !streamAtual) return;
 
-      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && video.videoWidth > 0) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        contexto.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const agora = performance.now();
+      if (agora - ultimoQuadroEm < 120) {
+        requestAnimationFrame(lerQuadro);
+        return;
+      }
+      ultimoQuadroEm = agora;
 
+      if (
+        video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA &&
+        video.videoWidth > 0 &&
+        video.videoHeight > 0
+      ) {
         try {
-          const imagem = contexto.getImageData(0, 0, canvas.width, canvas.height);
-          const resultado = window.jsQR(imagem.data, imagem.width, imagem.height, {
-            inversionAttempts: "attemptBoth"
-          });
+          let conteudo = "";
 
-          if (resultado && resultado.data && resultado.data.trim()) {
+          if (detectorNativo) {
+            const codigos = await detectorNativo.detect(video);
+            if (codigos.length && codigos[0].rawValue) {
+              conteudo = codigos[0].rawValue.trim();
+            }
+          }
+
+          if (!conteudo && typeof window.jsQR === "function") {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            contexto.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imagem = contexto.getImageData(0, 0, canvas.width, canvas.height);
+            const resultado = window.jsQR(imagem.data, imagem.width, imagem.height, {
+              inversionAttempts: "attemptBoth"
+            });
+            if (resultado && resultado.data) conteudo = resultado.data.trim();
+          }
+
+          if (conteudo) {
             qrEncontrado = true;
             lendoQR = false;
-            mensagem.textContent = "QR Code encontrado! Abrindo...";
-            const conteudo = resultado.data.trim();
+            mensagem.textContent = "QR Code encontrado! Abrindo autenticação...";
             pararCamera();
             processarQR(conteudo);
             return;
           }
         } catch (erro) {
-          console.error("Erro ao ler o QR Code:", erro);
+          console.error("Erro durante a leitura do QR:", erro);
         }
       }
 
@@ -232,20 +264,21 @@
     }
 
     function processarQR(conteudo) {
-      // Se o QR contém URL HTTPS do próprio site, abre a URL lida.
+      // Links dentro do QR são abertos diretamente.
       try {
         const url = new URL(conteudo);
-        if (url.protocol === "https:" && url.hostname === "dsaokod.vercel.app") {
-          window.location.href = url.href;
+        if (url.protocol === "https:" || url.protocol === "http:") {
+          window.location.assign(url.href);
           return;
         }
-      } catch (_) {}
+      } catch (_) {
+        // Se não for um link, trata o conteúdo como código do produto.
+      }
 
-      // Para QR com identificador simples, envia o valor para a página de autenticação.
-      // Confirme que este arquivo existe no projeto e valida o código no servidor.
-      window.location.href =
+      window.location.assign(
         "https://dsaokod.vercel.app/autenticar.html?codigo=" +
-        encodeURIComponent(conteudo);
+        encodeURIComponent(conteudo)
+      );
     }
 
     function pararCamera() {
