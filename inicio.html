@@ -272,17 +272,12 @@ function processarQR(conteudo) {
     return;
   }
 
-  const qrCadastrado = "https://qr.link/TeYMmX";
+  const destino = new URL(
+    "/autentico.html",
+    "https://dsaokod.vercel.app"
+  );
 
-  const normalizar = (valor) => valor.replace(/\/+$/, "");
-  const destino = new URL("/autentico.html", window.location.origin);
-
-  if (normalizar(lido) === normalizar(qrCadastrado)) {
-    destino.searchParams.set("codigo", qrCadastrado);
-  } else {
-    destino.searchParams.set("codigo", lido);
-  }
-
+  destino.searchParams.set("codigo", lido);
   window.location.href = destino.href;
 }
 
