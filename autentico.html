@@ -45,7 +45,9 @@
   </header>
 
   <section class="faixa-status" aria-live="polite">
-    <div class="selo" id="selo" aria-hidden="true">✓</div>
+    <div class="selo" id="selo">
+  <img src="assets/authnow-logo.jpg" alt="AuthNow">
+</div>
     <div class="status-conteudo">
       <div class="status verificando" id="status">VERIFICANDO...</div>
       <div class="codigo">CÓDIGO: <span id="codigo">—</span></div>
@@ -73,7 +75,9 @@
     */
     const CODIGOS_DE_TESTE_VALIDOS = new Set(["TG15-8F3A-7K9D-2L6M"]);
     const params = new URLSearchParams(window.location.search);
-    const codigo = (params.get("codigo") || "").trim();
+    const codigo = (params.get("codigo") || "").trim() === "TG15-8F3A-7K9D-2L6M"
+  ? "aPYYGu1ho4"
+  : (params.get("codigo") || "").trim();
     const statusEl = document.getElementById("status");
     const codigoEl = document.getElementById("codigo");
     const mensagemEl = document.getElementById("mensagem");
