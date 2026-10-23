@@ -265,21 +265,25 @@
 
     
 function processarQR(conteudo) {
-  const codigo = (conteudo || "").trim();
+  const lido = (conteudo || "").trim();
 
-  if (!codigo) {
-    alert("QR Code inválido ou vazio.");
+  if (!lido) {
+    alert("QR Code inválido.");
     return;
   }
 
-  // Abre a página de autenticação com o código lido
-  const destino = new URL(
-    "/autentico.html",
-    "https://dsaokod.vercel.app"
-  );
+  const qrCadastrado = "https://qr.link/TeYMmX";
 
-  destino.searchParams.set("codigo", codigo);
-  window.location.href = destino.toString();
+  const normalizar = (valor) => valor.replace(/\/+$/, "");
+  const destino = new URL("/autentico.html", window.location.origin);
+
+  if (normalizar(lido) === normalizar(qrCadastrado)) {
+    destino.searchParams.set("codigo", qrCadastrado);
+  } else {
+    destino.searchParams.set("codigo", lido);
+  }
+
+  window.location.href = destino.href;
 }
 
 
