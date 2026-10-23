@@ -15,9 +15,9 @@
     html, body { margin: 0; min-height: 100%; }
     body { font-family: Arial, Helvetica, sans-serif; color: var(--texto); background: var(--fundo); }
     .cabecalho { min-height: 190px; background: var(--branco); text-align: center; padding: 24px 18px 22px; position: relative; }
-    .logo { display: block; width: 154px; height: 96px; object-fit: contain; margin: 0 auto 14px; }
+    .logo { display: block; width: 135px; height: 84px; object-fit: contain; margin: 0 auto 14px; }
     .idioma { position: absolute; top: 28px; right: 16px; border: 2px solid #292929; border-radius: 28px; padding: 9px 13px; font-size: 15px; background: #fff; }
-    .cabecalho h1 { margin: 0; font-size: 26px; font-weight: 700; }
+    .cabecalho h1 { margin: 0; font-size: 23px; font-weight: 700; }
     .faixa-status { min-height: 116px; padding: 18px 22px; display: flex; align-items: center; gap: 14px; background: #fff; border-bottom: 1px solid #e7ecee; }
     .selo { flex: 0 0 64px; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: #244b91; color: #fff; font-size: 38px; border: 3px solid #dce8ff; }
     .status-conteudo { min-width: 0; flex: 1; }
@@ -41,10 +41,39 @@
   object-fit: contain;
   border-radius: 50%;
 }
+.menu-superior {
+  position: absolute;
+  top: 28px;
+  left: 20px;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 2px 8px #00000018;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.menu-superior span {
+  display: block;
+  width: 28px;
+  height: 4px;
+  border-radius: 4px;
+  background: #333;
+}
   </style>
 </head>
 <body>
   <header class="cabecalho">
+<button class="menu-superior" aria-label="Menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
     <span class="idioma" aria-label="Idioma português">POR ⌄</span>
     <img class="logo" src="assets/indufar-logo.png" alt="INDUFAR">
     <h1>T.G. 15 mg</h1>
@@ -63,7 +92,7 @@
 
   <main>
     <img class="imagem-produto" src="assets/tg-15mg.png" alt="Embalagem T.G. 15 mg — Tirzepatida 15 mg/0,5 mL">
-    <p class="descricao">O código alfanumérico acima deve corresponder ao código impresso no rótulo do produto.</p>
+    <p class="descricao">O código alfanumérico acima deve corresponder em código e cor ao que está impresso no rótulo do produto para verificar sua autenticidade.</p>
     <p class="dosagem">15 mg</p>
     <div class="mensagem" id="mensagem">Verificando código...</div>
     <button class="continuar" id="continuar" type="button" hidden>Continuar</button>
