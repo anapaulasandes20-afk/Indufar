@@ -264,21 +264,29 @@
     }
 
     
+
+
 function processarQR(conteudo) {
   const lido = (conteudo || "").trim();
 
-  if (!lido) {
-    alert("QR Code vazio.");
+  // QR oficial do produto
+  const QR_OFICIAL = "https://dsaokod.vercel.app/";
+
+  if (
+    lido === QR_OFICIAL ||
+    lido === "https://dsaokod.vercel.app"
+  ) {
+    window.location.href =
+      "https://dsaokod.vercel.app/autentico.html?codigo=TG15-8F3A-7K9D-2L6M";
     return;
   }
 
-  const destino = new URL(
-    "https://dsaokod.vercel.app/autentico.html"
-  );
-
-  destino.searchParams.set("codigo", lido);
-  window.location.href = destino.href;
+  // Qualquer outro QR será considerado inválido
+  window.location.href =
+    "https://dsaokod.vercel.app/autentico.html?codigo=INVALIDO";
 }
+
+
 
     function pararCamera() {
       lendoQR = false;
