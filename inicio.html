@@ -80,7 +80,9 @@
 
   <section id="instrucoes" class="tela">
     <div class="cartao-instrucoes">
-      <div class="passo"><span class="numero-passo">1</span><div><h2>Escaneie seu produto</h2><p>Escaneie o código QR do produto.</p><div style="font-size:54px;color:#aaa;margin-top:8px;">▦</div></div></div>
+      <div class="passo"><span class="numero-passo">1</span><div><h2>Escaneie seu produto</h2><p>Escaneie o código QR do produto.</p><div style="margin-top:8px;width:100px;height:100px;background:#fff;display:flex;align-items:center;justify-content:center;border:1px solid #ddd;">
+  <span style="font-size:64px;color:#b8b8bd;line-height:1;">▦</span>
+</div></div></div>
       <div class="passo"><span class="numero-passo">2</span><div><h2>Procure boa iluminação</h2><p>Certifique-se de estar em um lugar bem iluminado.</p></div></div>
       <div class="passo"><span class="numero-passo">3</span><div><h2>Ajuste a distância</h2><p>Aproxime-se e afaste-se conforme as instruções.</p></div></div>
       <label class="privacidade"><input type="checkbox" id="aceite-privacidade"><span>Concordo com a <a href="politica-privacidade.html">Política de Privacidade</a> (uso da câmera e localização para validação de QR).</span></label>
@@ -141,14 +143,17 @@
       irScanner.disabled = !aceite.checked;
       clearInterval(intervaloProgresso);
       barra.style.width = "0%";
-      porcentagem.textContent = "0%";
+      porcentagem.textContent = aceite.checked
+  ? "Carregando... Por favor, aguarde. 0%"
+  : "0%";
 
       if (aceite.checked) {
         let valor = 0;
         intervaloProgresso = setInterval(() => {
           valor = Math.min(valor + 1, 100);
           barra.style.width = valor + "%";
-          porcentagem.textContent = valor + "%";
+          porcentagem.textContent =
+  "Carregando... Por favor, aguarde. " + valor + "%";
           if (valor >= 100) {
             clearInterval(intervaloProgresso);
             intervaloProgresso = null;
