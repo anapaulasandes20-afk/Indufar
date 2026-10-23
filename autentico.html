@@ -98,7 +98,7 @@ autentico.html
       statusEl.className = "status " + tipo;
       statusEl.textContent = titulo;
       mensagemEl.textContent = texto;
-      seloEl.textContent = simbolo;
+      seloEl.innerHTML = '<img src="assets/authnow-minilogo.jpg" alt="AuthNow">';
       seloEl.style.background = tipo === "valido" ? "#16a34a" : (tipo === "invalido" ? "#dc2626" : "#a16207");
       continuarEl.hidden = tipo !== "valido";
     }
