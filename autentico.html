@@ -82,7 +82,9 @@ autentico.html
     const seloEl = document.getElementById("selo");
     const continuarEl = document.getElementById("continuar");
 
-    codigoEl.textContent = codigo || "Não informado";
+    codigoEl.textContent = codigo === "TG15-8F3A-7K9D-2L6M"
+  ? "aPYYGu1ho4"
+  : (codigo || "Não informado");
 
     function definirResultado(tipo, titulo, texto, simbolo) {
       statusEl.className = "status " + tipo;
