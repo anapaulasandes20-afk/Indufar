@@ -268,19 +268,17 @@ function processarQR(conteudo) {
   const lido = (conteudo || "").trim();
 
   if (!lido) {
-    alert("QR Code inválido.");
+    alert("QR Code vazio.");
     return;
   }
 
   const destino = new URL(
-    "/autentico.html",
-    "https://dsaokod.vercel.app"
+    "https://dsaokod.vercel.app/autentico.html"
   );
 
   destino.searchParams.set("codigo", lido);
   window.location.href = destino.href;
 }
-
 
     function pararCamera() {
       lendoQR = false;
