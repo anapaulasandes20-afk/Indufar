@@ -265,21 +265,21 @@
 
     
 function processarQR(conteudo) {
-  // Links dentro do QR são abertos diretamente.
-  try {
-    const url = new URL(conteudo);
-    if (url.protocol === "https:" || url.protocol === "http:") {
-      window.location.assign(url.href);
-      return;
-    }
-  } catch (_) {
-    // Se não for um link, trata o conteúdo como código do produto.
+  const codigo = (conteudo || "").trim();
+
+  if (!codigo) {
+    alert("QR Code inválido ou vazio.");
+    return;
   }
 
-  window.location.assign(
-    "https://dsaokod.vercel.app/autenticar.html?codigo=" +
-    encodeURIComponent(conteudo)
+  // Abre a página de autenticação com o código lido
+  const destino = new URL(
+    "/autentico.html",
+    "https://dsaokod.vercel.app"
   );
+
+  destino.searchParams.set("codigo", codigo);
+  window.location.href = destino.toString();
 }
 
 
