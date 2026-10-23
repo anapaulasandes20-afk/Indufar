@@ -263,23 +263,25 @@
       if (lendoQR) requestAnimationFrame(lerQuadro);
     }
 
-    function processarQR(conteudo) {
-      // Links dentro do QR são abertos diretamente.
-      try {
-        const url = new URL(conteudo);
-        if (url.protocol === "https:" || url.protocol === "http:") {
-          window.location.assign(url.href);
-          return;
-        }
-      } catch (_) {
-        // Se não for um link, trata o conteúdo como código do produto.
-      }
-
-      window.location.assign(
-        "https://dsaokod.vercel.app/autenticar.html?codigo=" +
-        encodeURIComponent(conteudo)
-      );
+    
+function processarQR(conteudo) {
+  // Links dentro do QR são abertos diretamente.
+  try {
+    const url = new URL(conteudo);
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      window.location.assign(url.href);
+      return;
     }
+  } catch (_) {
+    // Se não for um link, trata o conteúdo como código do produto.
+  }
+
+  window.location.assign(
+    "https://dsaokod.vercel.app/autenticar.html?codigo=" +
+    encodeURIComponent(conteudo)
+  );
+}
+
 
     function pararCamera() {
       lendoQR = false;
